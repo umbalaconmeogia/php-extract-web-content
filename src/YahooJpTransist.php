@@ -1,8 +1,8 @@
 <?php
 /**
  * This is a tool to extract information from searching result of
- * http://transit.yahoo.co.jp/ (train path) into simple text form
- * so that I can paste it into my text document or calendar etc.
+ * YahooJapan!路線情報 (http://transit.yahoo.co.jp/) into simple
+ * text form so that I can paste it into calendar etc.
  *
  * To use this class, open yahoo!Transist, search the path you want,
  * then click "印刷する" button to show only the path you want (in among
@@ -10,6 +10,9 @@
  * it as parameter of this class constructor. Call __string() method to
  * get the simplified text.
  *
+ * Usage example:
+ *   $yahooJpTransist = new YahooJpTransist($printUrl);
+ *   echo $yahooJpTransist;
  */
 class YahooJpTransist {
   
@@ -90,14 +93,14 @@ class YahooJpTransist {
     $arriveTime = NULL;
     $departTime = NULL;
     if ($times->length == 1) {
-      $departTime = $times[0]->nodeValue;
+      $departTime = $times->item(0)->nodeValue;
     } else if ($times->length == 2) {
-      $arriveTime = $times[0]->nodeValue;
-      $departTime = $times[1]->nodeValue;
+      $arriveTime = $times->item(0)->nodeValue;
+      $departTime = $times->item(1)->nodeValue;
     }
     
     $names = $this->finder->query('.//*/dt', $station);
-    $name = $names[0]->nodeValue;
+    $name = $names->item(0)->nodeValue;
     
     return new YahooJpTransistStation($name, $arriveTime, $departTime);
   }
@@ -116,7 +119,7 @@ class YahooJpTransist {
     $line = trim($line);
 
     $platforms = $this->finder->query('.//*[@class="platform"]', $access);
-    $platform = trim($platforms[0]->nodeValue);
+    $platform = trim($platforms->item(0)->nodeValue);
     
     return new YahooJpTransistTransport($line, $platform);
   }
